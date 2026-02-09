@@ -1,0 +1,20 @@
+<header class="header">
+  <nav class="nav">
+    <a class="brand" href="{{ path('app_home') }}">
+      <img src="{{ asset('img/logo-title.png') }}" alt="Green Goodies" class="logo">
+    </a>
+
+    <div class="links">
+      <a href="#" class="link">Nos produits</a> {# Route à faire par la suite #}
+      <a href="#" class="link">Mon panier</a> {# Route à faire par la suite #}
+
+      {% if app.user %}
+        <a href="#" class="link">Mon compte</a> {# Route à faire par la suite #}
+        <a href="#" class="link">Déconnexion</a> {# Route à faire par la suite #}
+      {% else %}
+        <a href="#" class="link">Connexion</a> {# Route à faire par la suite #}
+        <a href="#" class="link">Inscription</a> {# Route à faire par la suite #}
+      {% endif %}
+    </div>
+  </nav>
+</header>

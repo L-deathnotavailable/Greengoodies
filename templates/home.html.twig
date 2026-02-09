@@ -1,0 +1,92 @@
+{% extends 'base/base.html.twig' %}
+
+{% block title %}Green Goodies{% endblock %}
+
+{% block body %}
+<main class="home">
+
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Bienvenue</h1>
+      <p>
+        Découvrez notre univers de produits durables et éthiques pour une consommation responsable.
+      </p>
+      <p>
+        Retrouvez des articles d’hygiène & beauté, des accessoires & boissons et du prêt à porter.
+      </p>
+    </div>
+
+    <div class="hero-right">
+      <img
+        src="{{ asset('img/header-less-less.png') }}"
+        alt="Green Goodies"
+        class="hero-image"
+      >
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Nos produits</h2>
+
+    <div class="grid">
+      {% for product in products %}
+        <article class="card">
+          <a class="card-link" href="#"> {# Route à faire par la suite #}
+            <div class="card-image">
+              <img
+                src="{{ asset('img/products/' ~ product.image) }}"
+                alt="{{ product.name }}"
+              >
+            </div>
+          
+            <h3 class="card-title">{{ product.name }}</h3>
+
+            {% if product.shortDescription %}
+                <p class="card-desc">
+                    {{ product.shortDescription|slice(0, 55) }}{% if product.shortDescription|length > 55 %}…{% endif %}
+                </p>
+            {% endif %}
+
+            <div class="card-price">
+              {{ (product.price / 100)|number_format(2, ',', ' ') }} €
+            </div>
+
+            <div class="card-cta">Voir le produit</div>
+          </a>
+        </article>
+      {% else %}
+        <p>Aucun produit pour le moment.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="split split-beige">
+    <div class="split-left">
+      <h2>Notre conviction</h2>
+      <p>
+        Chez GreenGoodies, nous croyons en un monde où la consommation est plus
+        respectueuse de l’environnement. En choisissant nos produits, vous soutenez
+        une démarche durable et éthique.
+      </p>
+    </div>
+
+    <div class="split-right">
+      <img src="{{ asset('img/orange-tree.png') }}" alt="Notre conviction">
+    </div>
+  </section>
+
+  <section class="split split-green">
+    <div class="split-right">
+      <img src="{{ asset('img/plastic-bag.png') }}" alt="Nos valeurs">
+    </div>
+
+    <div class="split-left">
+      <h2>Nos valeurs</h2>
+      <p>Durabilité : nous sélectionnons soigneusement des produits qui respectent l’environnement.</p>
+      <p>Transparence : nous mettons en avant des marques partenaires et des engagements concrets.</p>
+      <p>Éthique : nous privilégions les matériaux écologiques.</p>
+    </div>
+  </section>
+
+</main>
+{% endblock %}
