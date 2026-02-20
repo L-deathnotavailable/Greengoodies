@@ -10,10 +10,10 @@
 
       {% if app.user %}
         <a href="#" class="link">Mon compte</a> {# Route à faire par la suite #}
-        <a href="#" class="link">Déconnexion</a> {# Route à faire par la suite #}
+        <a href="{{ path('app_logout') }}" class="link">Déconnexion</a>
       {% else %}
-        <a href="#" class="link">Connexion</a> {# Route à faire par la suite #}
-        <a href="#" class="link">Inscription</a> {# Route à faire par la suite #}
+        <a href="{{ path('app_login') }}" class="link">Connexion</a>
+        <a href="{{ path('app_register') }}" class="link">Inscription</a>
       {% endif %}
     </div>
   </nav>

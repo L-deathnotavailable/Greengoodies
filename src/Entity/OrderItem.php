@@ -25,7 +25,7 @@ class OrderItem
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?product $product = null;
+    private ?Product $product = null;
 
     public function getId(): ?int
     {

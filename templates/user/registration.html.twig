@@ -1,0 +1,64 @@
+{% extends 'base/base.html.twig' %}
+
+{% block title %}Green Goodies | Inscription{% endblock %}
+
+{% block body %}
+<section class="auth-page">
+  <div class="auth-left">
+    <img src="{{ asset('img/inscription-picture.png') }}" alt="Inscription" class="auth-image">
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+      <h1 class="auth-title">Inscription</h1>
+      <p class="auth-subtitle">Tous les champs sont obligatoires.</p>
+
+      {{ form_start(registrationType, { attr: { class: 'auth-form' } }) }}
+
+        <div class="field">
+          {{ form_label(registrationType.lastName, 'Nom') }}
+          {{ form_widget(registrationType.lastName) }}
+          {{ form_errors(registrationType.lastName) }}
+        </div>
+
+        <div class="field">
+          {{ form_label(registrationType.firstName, 'Prénom') }}
+          {{ form_widget(registrationType.firstName) }}
+          {{ form_errors(registrationType.firstName) }}
+        </div>
+
+        <div class="field">
+          {{ form_label(registrationType.email, 'Adresse email') }}
+          {{ form_widget(registrationType.email) }}
+          {{ form_errors(registrationType.email) }}
+        </div>
+
+        <div class="field">
+          {{ form_label(registrationType.password.first, 'Mot de passe') }}
+          {{ form_widget(registrationType.password.first) }}
+          {{ form_errors(registrationType.password.first) }}
+        </div>
+
+        <div class="field">
+          {{ form_label(registrationType.password.second, 'Confirmation mot de passe') }}
+          {{ form_widget(registrationType.password.second) }}
+          {{ form_errors(registrationType.password.second) }}
+        </div>
+
+        <div class="field checkbox">
+          {{ form_widget(registrationType.acceptTerms) }}
+          {{ form_label(registrationType.acceptTerms, "J’accepte les CGU de GreenGoodies") }}
+          {{ form_errors(registrationType.acceptTerms) }}
+        </div>
+
+        <button class="auth-button" type="submit">S’inscrire</button>
+
+      {{ form_end(registrationType) }}
+
+      <p class="auth-switch">
+        Déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

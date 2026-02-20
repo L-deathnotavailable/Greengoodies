@@ -1,0 +1,56 @@
+{% extends 'base/base.html.twig' %}
+
+{% block title %}Green Goodies | Connexion{% endblock %}
+
+{% block body %}
+<section class="auth-page">
+  <div class="auth-left">
+    <img src="{{ asset('img/orange-tree.png') }}" alt="Connexion" class="auth-image">
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+      <h1 class="auth-title">Connexion</h1>
+
+      {% if error %}
+        <div class="auth-error">
+          Identifiants invalides.
+        </div>
+      {% endif %}
+
+      <form method="post" class="auth-form">
+        <div class="field">
+          <label for="inputEmail">Adresse email</label>
+          <input
+            type="email"
+            id="inputEmail"
+            name="email"
+            value="{{ email }}"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="inputPassword">Mot de passe</label>
+          <input
+            type="password"
+            id="inputPassword"
+            name="password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button class="auth-button" type="submit">Se connecter</button>
+      </form>
+
+      <p class="auth-switch">
+        Pas encore de compte ? <a href="{{ path('app_register') }}">S’inscrire</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
