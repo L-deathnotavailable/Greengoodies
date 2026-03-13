@@ -48,9 +48,11 @@
       </div>
 
       <div class="cart-actions">
-        <button class="button-type-one cart-validate-button" type="button">
-          Valider la commande
-        </button>
+        <form method="post" action="{{ path('app_cart_checkout') }}">
+            <button class="button-type-one cart-validate-button" type="submit">
+                Valider la commande
+            </button>
+        </form>
       </div>
     {% else %}
       <div class="cart-empty">

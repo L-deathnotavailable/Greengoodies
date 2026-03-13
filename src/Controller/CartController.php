@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\OrderItem;
+use App\Entity\User;
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CartController extends AbstractController
 {
@@ -89,5 +94,64 @@ class CartController extends AbstractController
         $this->addFlash('success', 'Panier vidé.');
 
         return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/checkout', name: 'app_cart_checkout', methods: ['POST'])]
+    public function checkout(
+        RequestStack $requestStack,
+        ProductRepository $productRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $user = $this->getUser();
+
+        // Si pas connecté -> on garde le panier en session et on redirige vers login
+        if (!$user instanceof User) {
+            $this->addFlash('error', 'Merci de vous connecter avant de valider votre commande.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $session = $requestStack->getSession();
+        $cart = $session->get('cart', []);
+
+        if (empty($cart)) {
+            $this->addFlash('error', 'Votre panier est vide.');
+            return $this->redirectToRoute('app_cart');
+        }
+
+        $order = new Order();
+        $order->setUser($user);
+        $order->setStatus('created');
+
+        $total = 0;
+
+        foreach ($cart as $productId => $quantity) {
+            $product = $productRepository->find($productId);
+
+            if (!$product || !$product->isPublished()) {
+                continue;
+            }
+
+            $orderItem = new OrderItem();
+            $orderItem->setParentOrder($order);
+            $orderItem->setProduct($product);
+            $orderItem->setQuantity($quantity);
+            $orderItem->setUnitPrice($product->getPrice());
+
+            $entityManager->persist($orderItem);
+
+            $total += $product->getPrice() * $quantity;
+        }
+
+        $order->setTotal($total);
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        // on vide le panier après création de la commande
+        $session->remove('cart');
+
+        $this->addFlash('success', 'Votre commande a bien été enregistrée.');
+
+        return $this->redirectToRoute('app_account');
     }
 }

@@ -14,12 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly Security $security
+        private readonly Security $security,
+        private readonly TokenStorageInterface $tokenStorage
     ) {}
 
     /**
@@ -120,18 +122,21 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        // Invalide la session (déconnexion)
-        $request->getSession()->invalidate();
-
         try {
             $this->entityManager->remove($user);
             $this->entityManager->flush();
+
+            // Déconnexion explicite
+            $this->tokenStorage->setToken(null);
+
+            // Invalidation de la session
+            $request->getSession()->invalidate();
+
+            $this->addFlash('success', 'Votre compte a bien été supprimé.');
         } catch (\Throwable $e) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression du compte.');
             return $this->redirectToRoute('app_account');
         }
-
-        $this->addFlash('success', 'Votre compte a bien été supprimé.');
 
         return $this->redirectToRoute('app_home');
     }

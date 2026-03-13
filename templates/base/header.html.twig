@@ -9,7 +9,7 @@
       <a href="{{ path('app_cart') }}" class="link">Mon panier</a>
 
       {% if app.user %}
-        <a href="#" class="link">Mon compte</a> {# Route à faire par la suite #}
+        <a href="{{ path('app_account') }}" class="link">Mon compte</a>
         <a href="{{ path('app_logout') }}" class="link">Déconnexion</a>
       {% else %}
         <a href="{{ path('app_login') }}" class="link">Connexion</a>

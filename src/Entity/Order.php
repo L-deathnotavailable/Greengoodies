@@ -21,13 +21,13 @@ class Order
     private ?User $user = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $status = null;
+    private string $status;
 
     #[ORM\Column]
-    private ?int $total = null;
+    private int $total = 0;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     /**
      * @var Collection<int, OrderItem>
@@ -38,6 +38,8 @@ class Order
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->status = 'created';
     }
 
     public function getId(): ?int
@@ -113,13 +115,7 @@ class Order
 
     public function removeOrderItem(OrderItem $orderItem): static
     {
-        if ($this->orderItems->removeElement($orderItem)) {
-            // set the owning side to null (unless already changed)
-            if ($orderItem->getParentOrder() === $this) {
-                $orderItem->setParentOrder(null);
-            }
-        }
-
+        $this->orderItems->removeElement($orderItem);
         return $this;
     }
 }

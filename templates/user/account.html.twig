@@ -1,0 +1,77 @@
+{% extends 'base/base.html.twig' %}
+
+{% block title %}Green Goodies | Mon compte{% endblock %}
+
+{% block body %}
+<section class="account-page">
+  <div class="account-wrapper">
+    <h1 class="account-title">Mon compte</h1>
+
+    {# ========================= My Orders ========================== #}
+    <div class="account-card">
+      <h2 class="account-card-title">Mes commandes</h2>
+
+      {% if orders is not empty %}
+        <div class="account-orders-table">
+          <div class="account-orders-head">
+            <span>N°</span>
+            <span>Date</span>
+            <span>Prix</span>
+          </div>
+
+          {% for order in orders %}
+            <div class="account-orders-row">
+              <span>{{ order.id }}</span>
+              <span>{{ order.createdAt ? order.createdAt|date('d/m/Y') : '-' }}</span>
+              <span>{{ (order.total / 100)|number_format(2, ',', ' ') }} €</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="account-empty">
+          Vous n’avez encore passé aucune commande.
+        </div>
+      {% endif %}
+    </div>
+
+    {# ========================= API ACCESS ========================== #}
+    <div class="account-card">
+      <h2 class="account-card-title">Mon accès API</h2>
+
+      <div class="account-api-status">
+        Statut :
+        <strong>
+          {% if user.apiEnabled %}
+            Activé
+          {% else %}
+            Désactivé
+          {% endif %}
+        </strong>
+      </div>
+
+      <form method="post" action="{{ path('api_access') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('toggle_api') }}">
+
+        <button type="submit" class="button-type-one account-button">
+          {% if user.apiEnabled %}
+            Désactiver mon accès API
+          {% else %}
+            Activer mon accès API
+          {% endif %}
+        </button>
+      </form>
+    </div>
+
+    {# ========================= DELETE ACCOUNT ========================== #}
+    <div class="account-card">
+      <form method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
+
+        <button type="submit" class="button-type-one account-button">
+          Supprimer mon compte
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

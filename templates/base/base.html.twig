@@ -18,6 +18,14 @@
   <body>
     {% include 'base/header.html.twig' %}
 
+    {% for label, messages in app.flashes %}
+      {% for message in messages %}
+        <div class="flash-message {{ label }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endfor %}
+
     <div class="container">
       {% block body %}{% endblock %}
     </div>
@@ -25,5 +33,17 @@
     {% include 'base/footer.html.twig' %}
 
     {% block javascripts %}{% endblock %}
+    <script>
+      setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach((message) => {
+          message.style.transition = 'opacity 0.4s ease';
+          message.style.opacity = '0';
+
+          setTimeout(() => {
+            message.remove();
+          }, 400);
+        });
+      }, 10000);
+    </script>
   </body>
 </html>

@@ -710,6 +710,122 @@ h1, h2, h3 {
   color: white;
 }
 
+/* =================================================================
+   My Account
+================================================================= */
+
+.account-page {
+  min-height: calc(100vh - 140px);
+  background-color: var(--background-color-main);
+  padding: 40px 20px 80px;
+}
+
+.account-wrapper {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.account-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+
+.account-card {
+  background: #fdfaf4;
+  padding: 38px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.account-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+/* Orders Array */
+.account-orders-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-orders-head,
+.account-orders-row {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.account-orders-head {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.account-orders-row {
+  font-size: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.account-orders-row:last-child {
+  border-bottom: none;
+}
+
+.account-empty {
+  font-size: 14px;
+  color: #666;
+}
+
+/* API */
+.account-api-status {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.account-button {
+  width: 100%;
+  padding: 24px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.account-button,
+.account-button:visited,
+.account-button:hover,
+.account-button:active {
+  color: white;
+}
+/* =================================================================
+   Flash messages
+================================================================= */
+.flash-message {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 15px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.flash-message.success {
+  background-color: #e6f7e6;
+  color: #2e5f2e;
+  border-left: 4px solid #7cc67c;
+}
+
+.flash-message.error {
+  background-color: #fbe6e6;
+  color: #8a3b3b;
+  border-left: 4px solid #c67c7c;
+}
+
 /* ================================================================
    RESPONSIVE
 ================================================================ */
@@ -740,6 +856,24 @@ h1, h2, h3 {
   .cart-item-price,
   .cart-summary-line strong {
     font-size: 1.6rem;
+  }
+  /* Account part */
+  .account-page {
+    padding: 30px 15px 50px;
+  }
+
+  .account-card {
+    padding: 24px 20px;
+  }
+
+  .account-orders-head,
+  .account-orders-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 12px;
+  }
+
+  .account-title {
+    font-size: 1.8rem;
   }
 }
 @media (max-width: 1100px) {
