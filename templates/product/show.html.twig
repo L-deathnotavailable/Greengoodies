@@ -33,9 +33,9 @@
       </div>
 
       <div class="product-detail-button-container">
-        <button class="button-type-one" type="button">
-          Ajouter au panier
-        </button>
+        <a href="{{ path('app_cart_add', { id: product.id }) }}" class="button-type-one product-add-cart-link">
+            Ajouter au panier
+        </a>
       </div>
     </div>
   </div>

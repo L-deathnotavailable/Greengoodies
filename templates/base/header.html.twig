@@ -6,7 +6,7 @@
 
     <div class="links">
       <a href="{{ path('app_product_index') }}" class="link">Nos produits</a> 
-      <a href="#" class="link">Mon panier</a> {# Route à faire par la suite #}
+      <a href="{{ path('app_cart') }}" class="link">Mon panier</a>
 
       {% if app.user %}
         <a href="#" class="link">Mon compte</a> {# Route à faire par la suite #}

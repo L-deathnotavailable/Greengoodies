@@ -1,0 +1,63 @@
+{% extends 'base/base.html.twig' %}
+
+{% block title %}Green Goodies | Mon panier{% endblock %}
+
+{% block body %}
+<section class="cart-page">
+  <div class="cart-wrapper">
+    <h1 class="cart-title">Mon panier</h1>
+
+    {% if items is not empty %}
+      <div class="cart-top-actions">
+        <a href="{{ path('app_cart_clear') }}" class="cart-clear-link">x Vider le panier</a>
+      </div>
+
+      <div class="cart-box">
+        {% for item in items %}
+          <div class="cart-item">
+            <div class="cart-item-image">
+              <img
+                src="{{ asset('img/products/' ~ item.product.image) }}"
+                alt="{{ item.product.name }}"
+              >
+            </div>
+
+            <div class="cart-item-content">
+              <h2 class="cart-item-title">{{ item.product.name }}</h2>
+              <p class="cart-item-quantity">Quantité : {{ item.quantity }}</p>
+              <p class="cart-item-price">
+                {{ (item.product.price / 100)|number_format(2, ',', ' ') }} €
+              </p>
+
+              <a href="{{ path('app_cart_remove', { id: item.product.id }) }}" class="cart-remove-link">
+                Retirer
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="cart-summary">
+          <div class="cart-summary-line">
+            <span>Total panier :</span>
+            <strong>{{ (total / 100)|number_format(2, ',', ' ') }} €</strong>
+          </div>
+          <div class="cart-summary-shipping">
+            Frais de livraison : Offert
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-actions">
+        <button class="button-type-one cart-validate-button" type="button">
+          Valider la commande
+        </button>
+      </div>
+    {% else %}
+      <div class="cart-empty">
+        <p>Votre panier est vide.</p>
+        <a href="{{ path('app_home') }}" class="button-type-one cart-back-home">Retour à l’accueil</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
