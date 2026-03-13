@@ -191,7 +191,7 @@ h1, h2, h3 {
   display: block;
 }
 
-/* SECTION TITRE */
+/* TITLE SECTION */
 .section {
   padding: 40px 0;
 }
@@ -206,7 +206,7 @@ h1, h2, h3 {
   font-weight: 500;
 }
 
-/* GRILLE PRODUITS */
+/* PRODUCTS GRID */
 .grid {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -304,7 +304,7 @@ h1, h2, h3 {
 .split-green { background: var(--bg-green); }
 
 /* ================================================================
-   BOUTONS
+   BUTTONS
 ================================================================ */
 .button-type-one {
   background-color: var(--button-bg);
@@ -494,6 +494,84 @@ h1, h2, h3 {
   font-size: 12px;
 }
 
+/* =================================================================
+   Section "Product detail"
+================================================================= */
+
+.product-detail-container {
+  display: flex;
+  min-height: calc(100vh - 140px);
+  background-color: var(--background-color-main);
+}
+
+.product-detail-left {
+  display: flex;
+  flex: 1.2;
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.product-detail-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-detail-right {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 40px;
+}
+
+.product-detail-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 420px;
+}
+
+.product-detail-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 18px;
+  line-height: 1.25;
+}
+
+.product-detail-price {
+  font-size: 30px;
+  color: #333;
+  margin: 0 0 42px;
+  font-weight: 400;
+}
+
+.product-detail-description-title {
+  font-size: 10px;
+  font-weight: 400;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+.product-detail-description {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 80px;
+}
+
+.product-detail-button-container {
+  margin-top: auto;
+}
+
+.product-detail-button-container .button-type-one {
+  width: 100%;
+  padding: 24px;
+}
+
+
 /* ================================================================
    RESPONSIVE
 ================================================================ */
@@ -540,5 +618,31 @@ h1, h2, h3 {
 
   .auth-right {
     padding: 30px 0;
+  }
+
+  /* Product detail */
+  .product-detail-container {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .product-detail-left {
+    height: 420px;
+  }
+
+  .product-detail-right {
+    padding: 40px 20px;
+  }
+
+  .product-detail-title {
+    font-size: 1.8rem;
+  }
+
+  .product-detail-price {
+    font-size: 2.2rem;
+  }
+
+  .product-detail-description {
+    margin-bottom: 40px;
   }
 }

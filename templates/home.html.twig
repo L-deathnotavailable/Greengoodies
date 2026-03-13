@@ -31,7 +31,7 @@
     <div class="grid">
       {% for product in products %}
         <article class="card">
-          <a class="card-link" href="#"> {# Route à faire par la suite #}
+          <a class="card-link" href="{{ path('app_product_show', { id: product.id }) }}">
             <div class="card-image">
               <img
                 src="{{ asset('img/products/' ~ product.image) }}"

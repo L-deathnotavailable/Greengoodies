@@ -1,0 +1,43 @@
+{% extends 'base/base.html.twig' %}
+
+{% block title %}Green Goodies | {{ product.name }}{% endblock %}
+
+{% block body %}
+<section class="product-detail-container">
+  <div class="product-detail-left">
+    <img
+      class="product-detail-picture"
+      src="{{ asset('img/products/' ~ product.image) }}"
+      alt="{{ product.name }}"
+    >
+  </div>
+
+  <div class="product-detail-right">
+    <div class="product-detail-content">
+      <h1 class="product-detail-title">{{ product.name }}</h1>
+
+      <p class="product-detail-price">
+        {{ (product.price / 100)|number_format(2, ',', ' ') }} €
+      </p>
+
+      <p class="product-detail-description-title">Description</p>
+
+      <div class="product-detail-description">
+        {% if product.fullDescription %}
+          {{ product.fullDescription|nl2br }}
+        {% elseif product.shortDescription %}
+          {{ product.shortDescription }}
+        {% else %}
+          <p>Aucune description disponible pour ce produit.</p>
+        {% endif %}
+      </div>
+
+      <div class="product-detail-button-container">
+        <button class="button-type-one" type="button">
+          Ajouter au panier
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
