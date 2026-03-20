@@ -6,10 +6,16 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(
+    fields: ['email'],
+    message: 'Cet email est déjà utilisé'
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -17,20 +23,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    #[Assert\NotBlank(message: 'Veuillez renseigner un email')]
+    #[Assert\Email(message: 'Email invalide')]
+    #[ORM\Column(length: 180, unique: true)]
+    private string $email;
 
     #[ORM\Column]
     private array $roles = [];
 
+    #[Assert\NotBlank(message: 'Veuillez saisir un mot de passe')]
+    #[Assert\Length(
+        min: 8,
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères'
+    )]
     #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    private string $password;
 
     #[ORM\Column]
     private bool $apiEnabled = false;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     /**
      * @var Collection<int, Order>
@@ -38,17 +51,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $orders;
 
+    #[Assert\NotBlank(message: 'Veuillez renseigner votre prénom')]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Le prénom ne doit pas dépasser {{ limit }} caractères'
+    )]
     #[ORM\Column(length: 50)]
-    private ?string $firstName = null;
+    private string $firstName;
 
+    #[Assert\NotBlank(message: 'Veuillez renseigner votre nom')]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères'
+    )]
     #[ORM\Column(length: 50)]
-    private ?string $lastName = null;
+    private string $lastName;
 
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
-        $this->apiEnabled = false; 
+        $this->apiEnabled = false;
         $this->createdAt = new \DateTimeImmutable();
     }
 
@@ -57,23 +80,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
     public function setEmail(string $email): static
     {
-        $this->email = $email;
+        $this->email = mb_strtolower(trim($email));
         return $this;
     }
 
     /**
-     * Symfony Security (identifiant unique)
+     * Symfony Security : identifiant unique de l'utilisateur
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -96,11 +119,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $this->roles = array_values(array_unique($roles));
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -116,7 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // si un jour tu ajoutes un champ temporaire type plainPassword, tu le clean ici
     }
 
-    public function isApiEnabled(): ?bool
+    public function isApiEnabled(): bool
     {
         return $this->apiEnabled;
     }
@@ -127,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -158,35 +181,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeOrder(Order $order): static
     {
-        if ($this->orders->removeElement($order)) {
-            if ($order->getUser() === $this) {
-                $order->setUser(null);
-            }
-        }
+        $this->orders->removeElement($order);
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
 
     public function setFirstName(string $firstName): static
     {
-        $this->firstName = $firstName;
+        $this->firstName = trim($firstName);
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLastName(): string
     {
         return $this->lastName;
     }
 
     public function setLastName(string $lastName): static
     {
-        $this->lastName = $lastName;
+        $this->lastName = trim($lastName);
 
         return $this;
     }
